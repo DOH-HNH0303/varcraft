@@ -2,20 +2,29 @@ process HOLLY_TOOL {
     tag "${sample}"
     label 'process_medium'
 
-    container 'docker.io/DOH-HNH0303/holly_tool:1.0'
+    container 'docker.io/hnh0303/varcraft-tool:1.0'
 
     input:
     tuple val(sample), path(assembly)
 
     output:
-    path "*.fa"
+    path "./output/*.fasta"
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     """
-    holly_tool.py --input ${assembly} --max ${params.max_ani} --min ${params.min_ani} --step ${params.step}
+    cpus=${params.max_cpus}
+    threads=$((cpus*2))
+
+    holly_tool.py \
+    --input ./${assembly} \
+    --max ${params.max_ani} \
+    --min ${params.min_ani} \
+    --step ${params.step} \
+    --threads $threads \
+    --outdir output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
