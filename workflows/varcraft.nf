@@ -35,7 +35,11 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK } from '../subworkflows/local/input_check'
+include { VARCRAFT_TOOL  } from '../modules/local/varcraft_tool'
+include { FASTP          } from '../modules/local/fastp'
+include { BWA_MEM        } from '../modules/local/bwa_mem'
+include { IVAR_CONSENSUS } from '../modules/local/ivar_consensus'
+include { SUMMARY        } from '../modules/local/summary'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,7 +50,6 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 //
 // MODULE: Installed directly from nf-core/modules
 //
-include { FASTQC                      } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
@@ -63,24 +66,81 @@ workflow VARCRAFT {
 
     ch_versions = Channel.empty()
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    INPUT_CHECK (
-        file(params.input)
-    )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
-    // TODO: OPTIONAL, you can use nf-validation plugin to create an input channel from the samplesheet with Channel.fromSamplesheet("input")
-    // See the documentation https://nextflow-io.github.io/nf-validation/samplesheets/fromSamplesheet/
-    // ! There is currently no tooling to help you write a sample sheet schema
+    /*
+    =============================================================================================================================
+        LOAD SAMPLESHEET
+    =============================================================================================================================
+    */
+    Channel
+        .fromPath(params.input)
+        .splitCsv(header: true)
+        .map{ tuple(it.sample, file(it.assembly, checkIfExists: true), file(it.fastq_1, checkIfExists: true), file(it.fastq_2, checkIfExists: true)) }
+        .set{ manifest }
 
-    //
-    // MODULE: Run FastQC
-    //
-    FASTQC (
-        INPUT_CHECK.out.reads
+    /*
+    =============================================================================================================================
+        PROCESS READS
+    =============================================================================================================================
+    */
+
+    // MODULE: Run fastp
+    FASTP (
+        manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, fastq_1, fastq_2 ] }
     )
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    ch_versions = ch_versions.mix(FASTP.out.versions.first())
+
+    /*
+    =============================================================================================================================
+        CREATE ASSEMBLY VARIANTS
+    =============================================================================================================================
+    */
+
+    // MODULE: Holly's tool
+    VARCRAFT_TOOL (
+        manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }
+    )
+
+    // Reformat channel - assumes the output file name is in the format sample.rep.ani.fa
+    VARCRAFT_TOOL
+        .out
+        .variants
+        .flatten()
+        .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
+        .combine(FASTP.out.reads, by: 0)
+        .set{ variants }
+
+    /*
+    =============================================================================================================================
+        CREATE CONSENSUS
+    =============================================================================================================================
+    */
+
+    // MODULE: Run BWA MEM
+    BWA_MEM (
+        variants
+    )
+
+    // MODULE: Run iVar
+    IVAR_CONSENSUS (
+        BWA_MEM.out.bam
+    )
+
+
+    /*
+    =============================================================================================================================
+        SUMMARIZE RESULTS
+    =============================================================================================================================
+    */
+
+    // MODULE: Summary
+    SUMMARY (
+        IVAR_CONSENSUS.out.consensus.collect()
+    )
+
+
+    /*
+
+    // MODULE: 
 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
@@ -108,6 +168,8 @@ workflow VARCRAFT {
         ch_multiqc_logo.toList()
     )
     multiqc_report = MULTIQC.out.report.toList()
+
+    */
 }
 
 /*
