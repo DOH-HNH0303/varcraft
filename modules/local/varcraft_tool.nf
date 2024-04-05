@@ -1,4 +1,4 @@
-process HOLLY_TOOL {
+process VARCRAFT_TOOL {
     tag "${sample}"
     label 'process_medium'
 
@@ -18,7 +18,7 @@ process HOLLY_TOOL {
     cpus=${params.max_cpus}
     threads=$((cpus*2))
 
-    holly_tool.py \
+    varcraft-tool.py \
     --input ./${assembly} \
     --max ${params.max_ani} \
     --min ${params.min_ani} \
@@ -28,7 +28,7 @@ process HOLLY_TOOL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        holly_tool: \$( holly_tool.py --version)
+        varcraft-tool: \$( varcraft-tool.py --version)
     END_VERSIONS
     """
 }
