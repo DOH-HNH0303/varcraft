@@ -110,7 +110,7 @@ workflow VARCRAFT {
 
     MASH (
         manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }
-        mash_in
+        VARCRAFT_TOOL.out.variants.set{ mash_in }
     )
 
     VARCRAFT_TOOL
