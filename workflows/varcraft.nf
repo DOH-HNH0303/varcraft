@@ -109,8 +109,10 @@ workflow VARCRAFT {
         //.view()
 
     MASH (
+        assembly
         mash_in
     )
+    
     VARCRAFT_TOOL
         .out
         .variants
