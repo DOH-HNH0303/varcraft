@@ -101,6 +101,14 @@ workflow VARCRAFT {
     )
 
     // Reformat channel - assumes the output file name is in the format sample.rep.ani.fa
+
+    VARCRAFT_TOOL
+        .out
+        .variants
+        .collect()
+        .set{ variants_mash }
+        .view()
+
     VARCRAFT_TOOL
         .out
         .variants
