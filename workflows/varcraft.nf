@@ -36,6 +36,7 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { VARCRAFT_TOOL  } from '../modules/local/varcraft_tool'
+include { MASH          } from '../modules/local/mash'
 include { FASTP          } from '../modules/local/fastp'
 include { BWA_MEM        } from '../modules/local/bwa_mem'
 include { IVAR_CONSENSUS } from '../modules/local/ivar_consensus'
@@ -107,6 +108,9 @@ workflow VARCRAFT {
         .variants//.collect().set{ variants_mash }
         .view()
 
+    MASH (
+        variants
+    )
     VARCRAFT_TOOL
         .out
         .variants
