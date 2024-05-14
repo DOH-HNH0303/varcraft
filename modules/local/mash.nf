@@ -5,7 +5,8 @@ process MASH {
 
     input:
     path mash_in
-    path assembly
+    tuple val(sample), path(assembly)//, stageAs: "ref/*")
+
 
     output:
     path "${prefix}_mash_results.txt", emit: mash_summary
@@ -14,8 +15,8 @@ process MASH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = "${ref.baseName}"
+    //def args = task.ext.args ?: ''
+    prefix = "${sample.baseName}"
 
     """
     mash sketch ${assembly} -s 10000 -o ${prefix}_reference
