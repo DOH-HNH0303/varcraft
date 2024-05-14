@@ -4,7 +4,7 @@ process MASH {
     container 'docker.io/hnh0303/varcraft-tool:1.0'
 
     input:
-    path variants
+    path mash_in
 
     output:
     path "all.txt", emit: summary
@@ -14,6 +14,6 @@ process MASH {
 
     script:
     """
-    cat ${variants} > all.txt
+    cat ${mash_in} > all.txt
     """
 }

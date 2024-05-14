@@ -105,11 +105,11 @@ workflow VARCRAFT {
 
     VARCRAFT_TOOL
         .out
-        .variants//.collect().set{ variants_mash }
+        .variants.set{mash_in}//.collect().set{ variants_mash }
         .view()
 
     MASH (
-        variants
+        mash_in
     )
     VARCRAFT_TOOL
         .out
