@@ -5,7 +5,7 @@ process MASH {
 
     input:
     path mash_in
-    val(sample)//, path(assembly)//, stageAs: "ref/*")
+    val sample//, path(assembly)//, stageAs: "ref/*")
 
 
     output:
