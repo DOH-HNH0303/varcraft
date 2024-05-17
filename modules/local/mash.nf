@@ -24,9 +24,6 @@ process MASH {
 
     """
     ls
-    #echo "${mash_in} \n ${sample}"
-    
-    #echo "${sample}\n\n${assembly}\n\n${mash_in}"
 
     mash sketch ${assembly} -s 10000 -o ${prefix}_reference
     # mash sketch ${mash_in} -s 10000 -o ${prefix}_samples
