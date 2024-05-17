@@ -4,8 +4,8 @@ process MASH {
     container 'docker.io/staphb/mash:2.3'
 
     input:
-    path mash_in
-    val sample//, path(assembly)//, stageAs: "ref/*")
+    //path mash_in
+    tuple val(sample) path(assembly) path(mash_in)//, stageAs: "ref/*")
 
 
     output:
