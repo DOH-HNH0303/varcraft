@@ -32,4 +32,5 @@ process MASH {
     # mash dist ${prefix}_reference.msh ${prefix}_samples.msh -p $task.cpus | \
     # awk -v OFS='\t' '{print \$1, \$2, 100*(1-\$3)}' > ${prefix}_mash_results.txt
     touch mash_results.txt
+    """
 }
