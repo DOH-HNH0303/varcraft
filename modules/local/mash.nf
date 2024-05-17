@@ -5,7 +5,7 @@ process MASH {
 
     input:
     path mash_in
-    //tuple val(sample)//, path(assembly)//, stageAs: "ref/*")
+    tuple val(sample)//, path(assembly)//, stageAs: "ref/*")
 
 
     output:
@@ -17,7 +17,7 @@ process MASH {
 
     script:
     //def args = task.ext.args ?: ''
-    //prefix = task.ext.prefix ?: "${sample}"
+    prefix = task.ext.prefix ?: "${sample}"
 
     """
     echo "${mash_in}"
