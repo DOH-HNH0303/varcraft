@@ -23,6 +23,7 @@ process MASH {
     prefix = task.ext.prefix ?: "${sample}"
 
     """
+    ls
     echo "${mash_in} \n ${sample}"
     
     # echo "${sample}"#\n\n${assembly}\n\n${mash_in}"
