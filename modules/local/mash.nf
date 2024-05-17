@@ -5,7 +5,7 @@ process MASH {
 
     input:
     path mash_in
-    tuple val(sample), path(assembly)//, stageAs: "ref/*")
+    tuple val(sample)//, path(assembly)//, stageAs: "ref/*")
 
 
     output:
@@ -19,7 +19,7 @@ process MASH {
     prefix = task.ext.prefix ?: "${sample}"
 
     """
-    echo "${sample}\n\n${assembly}\n\n${mash_in}"
+    echo "${sample}"#\n\n${assembly}\n\n${mash_in}"
 
     # mash sketch ${assembly} -s 10000 -o ${prefix}_reference
     # mash sketch ${mash_in} -s 10000 -o ${prefix}_samples
