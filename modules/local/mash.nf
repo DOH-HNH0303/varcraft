@@ -16,7 +16,7 @@ process MASH {
 
     script:
     //def args = task.ext.args ?: ''
-    prefix = "${sample.baseName}"
+    prefix = task.ext.prefix ?: "${sample}"
 
     """
     echo "${sample}\n\n${assembly}\n\n${mash_in}"
