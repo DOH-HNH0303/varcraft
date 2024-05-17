@@ -9,7 +9,8 @@ process MASH {
 
 
     output:
-    path "${prefix}_mash_results.txt", emit: mash_summary
+    //path "${prefix}_mash_results.txt", emit: mash_summary
+    path "mash_results.txt", emit: mash_summary
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +21,7 @@ process MASH {
 
     """
     echo "${mash_in}"
+    touch mash_results.txt
     """
     //# echo "${sample}"#\n\n${assembly}\n\n${mash_in}"
 
