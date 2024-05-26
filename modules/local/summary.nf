@@ -5,7 +5,7 @@ process SUMMARY {
 
     input:
     path assemblies
-    //var sample
+    val sample
     path summary
 
     output:
