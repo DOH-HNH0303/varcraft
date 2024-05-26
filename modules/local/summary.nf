@@ -5,7 +5,8 @@ process SUMMARY {
 
     input:
     path assemblies
-    var samples
+    var sample
+    path summary
 
     output:
     path "summary.csv", emit: summary

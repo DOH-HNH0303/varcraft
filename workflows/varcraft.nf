@@ -148,7 +148,7 @@ workflow VARCRAFT {
     // MODULE: Summary
     SUMMARY (
         IVAR_CONSENSUS.out.consensus.collect(),
-        it.sample,
+        manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample ] },
         MASH.out.mash_summary
     )
 
