@@ -16,6 +16,7 @@ process SUMMARY {
 
     script:
     """
+    cat ${summary}
     cat ${assemblies} > all.fa
     ${samples}_summary.sh all.fa
     """
