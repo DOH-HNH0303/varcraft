@@ -5,6 +5,7 @@ process SUMMARY {
 
     input:
     path assemblies
+    var samples
 
     output:
     path "summary.csv", emit: summary
@@ -15,6 +16,6 @@ process SUMMARY {
     script:
     """
     cat ${assemblies} > all.fa
-    summary.sh all.fa
+    ${samples}_summary.sh all.fa
     """
 }
