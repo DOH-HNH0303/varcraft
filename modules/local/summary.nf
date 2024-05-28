@@ -18,6 +18,7 @@ process SUMMARY {
     """
     cat ${summary}
     cat ${assemblies} > all.fa
-    ${sample}_summary.sh all.fa
+    echo ${sample}
+    summary.sh all.fa
     """
 }
