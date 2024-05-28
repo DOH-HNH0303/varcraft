@@ -17,6 +17,7 @@ process SUMMARY {
     script:
     """
     cat ${summary}
+    ls ${assemblies} | wc -l > assembly_count.txt
     cat ${assemblies} > all.fa
     echo ${sample}
     summary.sh all.fa
