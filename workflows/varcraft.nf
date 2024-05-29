@@ -110,7 +110,7 @@ workflow VARCRAFT {
 
     manifest.view()
     MASH (
-        manifest.map{ [ sample, assembly ] }, 
+        manifest.map{  sample, assembly  }, 
         mash_in//.out.variants.set{ mash_in }
     )
 
@@ -149,7 +149,7 @@ workflow VARCRAFT {
     IVAR_CONSENSUS.out.consensus.collect().view()
     SUMMARY (
         IVAR_CONSENSUS.out.consensus.collect(),
-        manifest.map{ sample, assembly },
+        manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] },
         MASH.out.mash_summary
     )
 

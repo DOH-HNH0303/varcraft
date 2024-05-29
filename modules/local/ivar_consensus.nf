@@ -11,6 +11,7 @@ process IVAR_CONSENSUS {
     output:
     path '*.fa',         emit: consensus
     path "versions.yml", emit: versions
+    val "${sample}",     emit: sample
 
     when:
     task.ext.when == null || task.ext.when
