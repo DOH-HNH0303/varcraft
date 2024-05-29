@@ -9,7 +9,7 @@ process SUMMARY {
     path summary
 
     output:
-    path "summary.csv", emit: summary
+    path "${sample}_summary.csv", emit: summary
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,5 +21,6 @@ process SUMMARY {
     cat ${assemblies} > all.fa
     echo ${sample}
     summary.sh all.fa
+    mv summary.csv ${sample}_summary.csv
     """
 }

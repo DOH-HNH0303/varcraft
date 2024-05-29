@@ -13,8 +13,8 @@ process MASH {
 
 
     output:
-    //path "${prefix}_mash_results.txt", emit: mash_summary
     path "${prefix}_mash_results.txt", emit: mash_summary
+    tuple val(sample), path("${prefix}_mash_results.txt"), emit: mash_out
 
     when:
     task.ext.when == null || task.ext.when
