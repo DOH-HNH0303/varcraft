@@ -4,8 +4,8 @@ process SUMMARY {
     container 'docker.io/hnh0303/varcraft-tool:1.0'
 
     input:
-    val sample
     path assemblies
+    val sample
     path summary
 
     output:
