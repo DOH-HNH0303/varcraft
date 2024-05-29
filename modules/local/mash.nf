@@ -8,7 +8,8 @@ process MASH {
     input:
     //path mash_in
     tuple val(sample), path(assembly)//, path(mash_in)
-    path(mash_in)//, stageAs: "ref/*")
+    //path(mash_in)//, stageAs: "ref/*")
+    tuple val(sample), path(mash_in), path(assembly)
 
 
     output:
