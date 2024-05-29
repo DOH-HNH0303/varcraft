@@ -9,6 +9,7 @@ process VARCRAFT_TOOL {
 
     output:
     path "output/*.fasta", emit: variants
+    tuple val(sample), "output/*.fasta", emit: var_tuple
 
     when:
     task.ext.when == null || task.ext.when
