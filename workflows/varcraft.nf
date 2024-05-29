@@ -103,11 +103,10 @@ workflow VARCRAFT {
 
     // Reformat channel - assumes the output file name is in the format sample.rep.ani.fa
 
-    var_ch = Channel.from(
-    VARCRAFT_TOOL
+    var_ch = VARCRAFT_TOOL
         .out
         .variants//.collect().set{ variants_mash }
-        .flatten())
+        .flatten()
 
     
         //.map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
