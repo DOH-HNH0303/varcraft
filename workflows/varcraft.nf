@@ -102,7 +102,7 @@ workflow VARCRAFT {
     )
 
     // Reformat channel - assumes the output file name is in the format sample.rep.ani.fa
-    var_ch = Channel()
+    //var_ch = Channel()
     VARCRAFT_TOOL
         .out
         .var_tuple
@@ -123,7 +123,7 @@ workflow VARCRAFT {
     //var_ch
     sam_as_ch.view()
     MASH (
-        manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
+        //manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
         mash_in//.out.variants.set{ mash_in }
     )
 
