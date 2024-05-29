@@ -102,15 +102,12 @@ workflow VARCRAFT {
     )
 
     // Reformat channel - assumes the output file name is in the format sample.rep.ani.fa
-    VARCRAFT_TOOL
-        .out
-        .variants.view()
+
     VARCRAFT_TOOL
         .out
         .variants//.collect().set{ variants_mash }
-        //.flatten()
+        .flatten()
         .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
-        //.combine(FASTP.out.reads, by: 0)
         .view().set{ mash_in }
         //.map(sample, variants -> [sample, variants]).view()
         //.set{mash_input}
@@ -118,7 +115,7 @@ workflow VARCRAFT {
 
     
     MASH (
-        //manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
+        manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
         mash_in//.out.variants.set{ mash_in }
     )
 
@@ -126,8 +123,8 @@ workflow VARCRAFT {
         .out
         .variants
         .flatten()
-        //.map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
-        .combine(it..map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }, by: 0)
+        .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
+        .combine(FASTP.out.reads, by: 0)
         .set{ variants }
 
     /*
