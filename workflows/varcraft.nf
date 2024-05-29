@@ -116,7 +116,7 @@ workflow VARCRAFT {
         //.set{mash_input}
       
 
-    sam_as_ch = Channel.from(manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] })
+    sam_as_ch = manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }
     var_ch.view()
     sam_as_ch.view()
     MASH (
