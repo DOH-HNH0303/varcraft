@@ -8,3 +8,4 @@ testing*
 *.pyc
 samplesheet.csv
 null/pipeline_info/execution_trace_2024-05-25_23-23-25.txt
+/input
