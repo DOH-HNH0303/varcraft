@@ -126,8 +126,8 @@ workflow VARCRAFT {
         .out
         .variants
         .flatten()
-        .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
-        .combine(assembly, by: 0)
+        //.map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
+        .combine(it..map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }, by: 0)
         .set{ variants }
 
     /*
