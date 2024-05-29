@@ -118,7 +118,7 @@ workflow VARCRAFT {
 
     sam_as_ch = manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }
     var_ch.view()
-    //sam_as_ch.view()
+    sam_as_ch.view()
     MASH (
         manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
         //mash_in//.out.variants.set{ mash_in }
