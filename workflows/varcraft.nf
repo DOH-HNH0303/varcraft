@@ -105,13 +105,15 @@ workflow VARCRAFT {
 
     VARCRAFT_TOOL
         .out
-        .variants
-        .set{mash_in}//.collect().set{ variants_mash }
-        .map(sample, mash_in -> [sample, mash_in]).view()
+        .variants//.collect().set{ variants_mash }
+        .flatten()
+        .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
+        .view().set(mash_in)
+        //.map(sample, variants -> [sample, variants]).view()
         //.set{mash_input}
       
 
-    manifest.view()
+    
     MASH (
         manifest.map{  sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] }, 
         mash_in//.out.variants.set{ mash_in }
