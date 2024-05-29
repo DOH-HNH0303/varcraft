@@ -110,7 +110,7 @@ workflow VARCRAFT {
         .variants//.collect().set{ variants_mash }
         //.flatten()
         .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
-        .combine(FASTP.out.reads, by: 0)
+        //.combine(FASTP.out.reads, by: 0)
         .view().set{ mash_in }
         //.map(sample, variants -> [sample, variants]).view()
         //.set{mash_input}
