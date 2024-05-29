@@ -127,7 +127,7 @@ workflow VARCRAFT {
         .variants
         .flatten()
         .map{ assembly -> [ file(assembly).getSimpleName(), assembly ] }
-        .combine(FASTP.out.reads, by: 0)
+        .combine(assembly, by: 0)
         .set{ variants }
 
     /*
