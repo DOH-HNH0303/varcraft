@@ -162,9 +162,11 @@ workflow VARCRAFT {
     IVAR_CONSENSUS.out.consensus.collect().view()
     SUMMARY (
         
-        IVAR_CONSENSUS.out.consensus.collect(),
-        manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] },
-        MASH.out.mash_summary
+        IVAR_CONSENSUS.out.consensus.collect().map( assemblies, sample -> [sample, assemblies])
+        .combine(manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] })
+        .combine(MASH.out.mash_summary)
+        
+        
     )
 
 
