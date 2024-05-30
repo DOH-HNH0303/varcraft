@@ -4,9 +4,10 @@ process SUMMARY {
     container 'docker.io/hnh0303/varcraft-tool:1.0'
 
     input:
-    path assemblies
-    val sample
-    path summary
+    tuple val(sample), path(assemblies), path(ref), path(summary)
+    //path assemblies
+    //val sample
+    //path summary
 
     output:
     path "${sample}_summary.csv", emit: summary
