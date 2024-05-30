@@ -12,7 +12,7 @@ process IVAR_CONSENSUS {
     path '*.fa',         emit: consensus
     path "versions.yml", emit: versions
     val "${sample}",     emit: sample
-    tuple path('*.fa'), val("${sample}"), emit:as_sample
+    tuple val("${sample}"), path('*.fa'), emit:as_sample
 
     when:
     task.ext.when == null || task.ext.when
