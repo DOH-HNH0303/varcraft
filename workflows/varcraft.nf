@@ -164,7 +164,7 @@ workflow VARCRAFT {
         
         IVAR_CONSENSUS.out.as_sample//.collect()
         .combine(manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] })
-        .combine(MASH.out.mash_summary).collect()
+        .combine(MASH.out.mash_summary).collect().view()
         
         
     )
