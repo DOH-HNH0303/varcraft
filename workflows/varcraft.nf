@@ -162,9 +162,8 @@ workflow VARCRAFT {
     IVAR_CONSENSUS.out.consensus.collect().view()
     SUMMARY (
         
-        IVAR_CONSENSUS.out.as_sample//.collect()
-        .combine(manifest.map{ sample, assembly, fastq_1, fastq_2 -> [ sample, assembly ] })
-        .combine(MASH.out.mash_summary).collect().view()
+        IVAR_CONSENSUS.out.consensus.splitFasta().collectFile(name: 'all.fa'),
+        MASH.out.mash_summary.map{ sample, summary -> summary }.splitText().collectFile(name: 'mash.txt')
         
         
     )
