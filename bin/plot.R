@@ -1,12 +1,9 @@
-library(tidyverse)
-library(broom)
-library(ggplot2)
-library("magrittr")
-library(dplyr)
-library(readr)
-library(tidyr)
-library(argparser)
+#!/usr/bin/env Rscript
 
+
+install.packages("argparser")
+library(tidyverse)
+library(argparser)
 
 p <- arg_parser("create visuals for Varcraft summary")
 # Add command line arguments
@@ -27,9 +24,9 @@ step<-argv$step
 df <- read_csv("summary.csv") %>%
   mutate(y = 100*n/length)
 
-cash <- read_tsv("results.txt",col_names = c("name", "year_a", "ps"))
+#cash <- read_tsv("results.txt",col_names = c("name", "year_a", "ps"))
 
-mash <- read_tsv("results.txt", col_names = c("sample", "mock", "true_ani")) %>%
+mash <- read_tsv("mash.txt", col_names = c("sample", "mock", "true_ani")) %>%
   mutate(x=100*(1-true_ani)) %>%
   select(sample, mock, true_ani, x) #list column name to select
 library(stringr)
@@ -65,7 +62,6 @@ mash <- mash %>%
   select(sample, ani, rep, true_ani)  #%>% mutate(sample=fasta$fasta)
 
 df <- merge(df, mash, by=c("sample","ani","rep")) %>% unique()
-
 
 p <- ggplot(df, aes(x=100*ani, y=true_ani))+
   geom_point()+
