@@ -1,23 +1,27 @@
 process SUMMARY {
     label 'process_medium'
 
-    container 'docker.io/jdj0303/epitome-base:1.0'
+    container 'docker.io/hnh0303/varcraft-tool:1.0'
 
     input:
-    path assemblies
-    path mash
+    tuple val(sample), path(assemblies), path(ref), path(summary)
+    //path assemblies
+    //val sample
+    //path summary
 
     output:
-    path "df_fitted.csv", emit: df_fitted
-    path "threshold.txt", emit: threshold
-    path "*.jpg",         emit: plots
+    path "${sample}_summary.csv", emit: summary
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     """
-    summary.sh ${assemblies}
-    summary.R
+    cat ${summary}
+    ls ${assemblies} | wc -l > assembly_count.txt
+    cat ${assemblies} > all.fa
+    echo ${sample}
+    summary.sh all.fa
+    mv summary.csv ${sample}_summary.csv
     """
 }
